@@ -1,3 +1,30 @@
+<?php
+    session_start();
+    // cek apakah ada id_admin di dalam session
+    if (!isset($_SESSION['id_admin'])) {
+        echo "
+            <script>
+                alert('Anda harus login sebagai admin!');
+                window.location.href = '../../login.php';
+            </script>
+        ";  
+    }
+    include "../../aksi/koneksi.php";
+    $id = $_SESSION['id_admin'];
+    // cek juga apakah ada data admin berdasarkan id admin?
+    $qCekData = "SELECT * FROM admin WHERE id_admin='$id'";
+    $cekData = mysqli_query($koneksi, $qCekData) or die(mysqli_error($koneksi));
+    if (mysqli_num_rows($cekData) == 0) {
+        echo "
+            <script>
+                alert('Anda harus login sebagai admin!');
+                window.location.href = '../../login.php';
+            </script>
+        ";  
+    }
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -32,7 +59,7 @@
                         <li><a class="dropdown-item" href="#!">Settings</a></li>
                         <li><a class="dropdown-item" href="#!">Activity Log</a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                        <li><a class="dropdown-item" href="../../aksi/auth/logout.php" onclick="return confirm('Anda ingin logout')">Logout</a></li>
                     </ul>
                 </li>
             </ul>
